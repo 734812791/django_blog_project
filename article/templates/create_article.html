@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}create_article{% endblock %}
+
+{% block content %}
+    <h2>Create article</h2>
+    <form method="post" class="p-4 m-4 bg-light border" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {{ field.label_tag }}<br>
+          {{ field }}
+        </div>
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+        <hr>
+        tags:
+        {% for tag in tags %}
+          {{ tag.tag_name }}<input type="checkbox" name="tags" value="{{ tag.tag_id }}">
+        {% endfor %}
+        <br>
+        image:<br>
+        <input type="file" name="images" accept="image/*" multiple><br>
+        <input type="submit" value="Commit" class="btn btn-primary">
+    </form>
+{% endblock %}

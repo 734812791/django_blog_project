@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}article detail{% endblock %}
+
+
+{% block content %}
+
+    {% for article in object_list %}
+    <div class="content">
+        <nav id="navbar-example2" class="navbar bg-body-tertiary px-3 mb-3">
+          <a class="navbar-brand" href="#">title:{{ article.title }}</a>
+
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollspyHeading1">article</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollspyHeading2">comment</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="scrollspy-example bg-body-tertiary p-3 rounded-2">
+            <p>created_at:{{ article.created_at|date:"Y-m-d H:i:s" }}</p>
+            <p>updated_at:{{ article.updated_at|date:"Y-m-d H:i:s" }}</p>
+          author:
+          {% for author in author %}
+            {% if author.user_id != None and author.user_id != '' %}
+                <a href="{% url 'article:my_article' author.user_id %}">
+                    {{ author.name }}
+                </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% load static %}
+        <div id="carouselExampleIndicators" class="carousel slide">
+          <div class="carousel-indicators">
+              {% for item in image_paths %}
+                  {% if forloop.first %}
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" class="active" aria-current="true" aria-label="Slide {{ forloop.counter0 }}"></button>
+                  {% else %}
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" aria-label="Slide {{ forloop.counter0 }}"></button>
+                  {% endif %}
+              {% endfor %}
+          </div>
+          <div class="carousel-inner">
+
+            {% for item in image_paths %}
+
+              {% if item.image_path == None %}
+                <img src="{{ MEDIA_URL }}uploads\pic.png" class="card-img-top" alt="Image">1111111111
+              {% else %}
+
+                  {% if forloop.first %}
+                    <div class="carousel-item active">
+                        <img src="{{ MEDIA_URL }}{{ item.image_path }}" class="card-img-top" alt="Image">
+                    </div>
+                  {% else %}
+                    <div class="carousel-item">
+                        <img src="{{ MEDIA_URL }}{{ item.image_path }}" class="card-img-top" alt="Image">
+                    </div>
+                  {% endif %}
+
+              {% endif %}
+
+            {% endfor %}
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+          <h4 id="scrollspyHeading1"><h1 style="font-weight: bold;">{{ article.title }}</h1></h4>
+          <p><h3 style="overflow-wrap: break-word;">{{ article.content }}</h3></p>
+          {% for tag in tags %}
+            {% if tag.tag_name != None %}
+            <a href="{% url 'article:search_article_by_tag' tag.tag_name %}">#{{ tag.tag_name }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+            <hr>
+            <h4 id="scrollspyHeading2">Comment</h4>
+            {% for comment in comments %}
+                <a href="{% url 'article:my_article' comment.user_id %}"><p style="font-weight: bold"><h4>{{comment.name}}:</h4></p></a>
+                <p><h4>{{comment.content}}</h4></p>
+
+                {% for picture in comments_pictures %}
+                    {% if picture.comment_id == comment.comment_id and picture.image_path != None %}
+                        <img src="{{ MEDIA_URL }}{{ picture.image_path }}" class="card-img-top" alt="Image">
+                    {% endif %}
+                {% endfor %}
+                {% if user.user_id == comment.user_id %}
+                    <a href="{% url 'article:delete_comment' comment.comment_id article.article_id %}" class="btn btn-danger">×</a>
+                {% endif %}
+                <p style="opacity: 0.5;">{{comment.created_at|date:"Y-m-d H:i:s"}}</p><br>
+
+            {% endfor %}
+    </div>
+
+<!--        <input id="article_id" value="{{article.article_id}}">-->
+<!--        <input id="article_title" value="{{article.title}}">-->
+<!--        <input id="article_content" value="{{article.content}}">-->
+
+        <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
+        <div>
+            <form class="reply-box" method="post" action="{% url 'article:create_comment' article.article_id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <textarea name="content" placeholder="Please enter a reply..."></textarea>
+                <label class="file-upload-btn">
+                    <i class="fas fa-upload"></i> add pictures
+                    <input type="file" name="images" accept="image/*" multiple>
+                    <input name="user_id" value="{{ user.user_id }}" style="display: none">
+                </label>
+                <button type="submit">comment</button>
+            </form>
+        </div>
+
+<!--    <script>-->
+<!--      var article_id=document.getElementById('article_id').value-->
+<!--      sessionStorage.setItem('article_id',article_id)-->
+<!--      var article_title=document.getElementById('article_title').value-->
+<!--      sessionStorage.setItem('article_title',article_title)-->
+<!--      var article_content=document.getElementById('article_content').value-->
+<!--      sessionStorage.setItem('article_content',article_content)-->
+<!--    </script>-->
+    </div>
+    {% endfor %}
+{% endblock %}

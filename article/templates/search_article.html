@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}my_article{% endblock %}
+
+{% block content %}
+<div style="width: 72rem;height: 3rem;background-color: #e6dbb9"><h1>search result</h1></div>
+<div class="row g-0">
+    {% for article in object_list %}
+        <div class="card" style="width: 18rem;">
+            {% load static %}
+          {% if article.image_path == None %}
+                <img src="{% static 'images/pic.png' %}" class="card-img-top" alt="Image">
+          {% else %}
+                <img src="{{ MEDIA_URL }}{{ article.image_path }}" class="card-img-top" alt="Image">
+          {% endif %}
+          <div class="card-body">
+            <div style="max-height: 220px;overflow: hidden">
+                <p class="card-title"><h2 style="font-weight: bold";>{{ article.title }}</h2></p>
+                {% if article.user_id == '' or article.user_id == None %}
+                    <p class="card-text">{{ article.name }}</p>
+                {% else %}
+                    <a href="{% url 'article:my_article' article.user_id %}">{{ article.name }}</a>
+                {% endif %}
+                <p style="opacity: 0.5;" class="card-text">{{ article.created_at|date:"Y-m-d H:i:s" }}</p>
+                <p class="card-text">{{ article.content }}</p>
+            </div>
+            <div>
+                <a href="{% url 'article:article_detail' article.article_id %}" class="btn btn-primary">detial</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}create_comment{% endblock %}
+
+{% block content %}
+
+    <h2>Create comment</h2>
+    <form method="post" class="p-4 m-4 bg-light border" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {{ field.label_tag }}<br>
+          {{ field }}
+        </div>
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+        <input id='article_id' name="article_id"><br>
+        <input id='article_title' value=""><br>
+        <input id='article_content' value=""><br>
+        image:<br>
+        <input type="file" name="images" accept="image/*" multiple><br>
+        <input type="submit" value="Commit" class="btn btn-primary">
+    </form>
+
+    <script>
+        var article_id = sessionStorage.getItem('article_id')
+        document.getElementById('article_id').setAttribute('value',article_id)
+        var article_title = sessionStorage.getItem('article_title')
+        document.getElementById('article_title').setAttribute('value',article_title)
+        var article_content = sessionStorage.getItem('article_content')
+        document.getElementById('article_content').setAttribute('value',article_content)
+    </script>
+{% endblock %}

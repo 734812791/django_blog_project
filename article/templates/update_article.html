@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}create_article{% endblock %}
+
+{% block content %}
+    <h2>Create article</h2>
+    <form method="post" class="p-4 m-4 bg-light border" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {{ field.label_tag }}<br>
+          {{ field }}
+        </div>
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+        <input type="input" name="user_id" value="{{ user.user_id }}" style="display: none">
+        <input type="submit" value="Commit" class="btn btn-primary">
+    </form>
+{% endblock %}

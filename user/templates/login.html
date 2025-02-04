@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  {% if form.errors %}
+    <p style="color: red">error</p>
+  {% endif %}
+  {% if user.is_authenticated %}
+  <h2>Already logged in</h2>
+  <a href="{% url 'article:article_list' %}" class="btn btn-dark">main page</a>
+  {% else %}
+  <form method="post" class="p-4 m-4 bg-light border">
+    {% csrf_token %}
+    <h1>Login page</h1>
+
+    <label for="Username">Account</label><br>
+    <input type="text" name="username" id="id_username"><br>
+    <label for="Password">Password</label><br>
+    <input type="password" name="password" id="id_password"><br>
+
+    <input type="submit" value="login" class="btn btn-primary">
+  </form>
+  <a href="{% url 'user:signup' %}" class="btn btn-dark">signup</a>
+  <a href="{% url 'user:user_list' %}" class="btn btn-dark">user_list</a>
+  {% endif %}
+{% endblock %}
+

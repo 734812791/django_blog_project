@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}user_list{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger"> delete this</button>
+        <a class="btn btn-dark"  href="{% url 'article:my_article' user.user_id %}">NO</a>
+    </form>
+    <ul style="background-color: bisque">
+        <li><h1>{{ object.title }}</h1></li>
+        <li><h1>{{ object.content }}</h1></li>
+    </ul>
+
+{% endblock %}

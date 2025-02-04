@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}detail{% endblock %}
+
+{% block content %}
+
+<h2>Sign up</h2>
+<form method="post" class="p-4 m-4 bg-light border">
+  {% csrf_token %}
+  {% for field in form %}
+    <div>
+      {{ field.label_tag }}<br>
+      {{ field }}
+    </div>
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+
+  <input type="submit" value="Sign up" class="btn btn-primary">
+</form>
+<a href="{% url 'user:login' %}" class="btn btn-dark">login</a>
+{% endblock %}

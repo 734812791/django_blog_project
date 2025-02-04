@@ -1,0 +1,70 @@
+.content {
+    padding-bottom: 80px; /* 给页面内容留出底部空间，避免被固定的回复框遮挡 */
+}
+
+/* 回复框的样式 */
+.reply-box {
+    position: fixed; /* 固定定位 */
+    bottom: 20px; /* 距离页面底部20px */
+    left: 50%; /* 使回复框水平居中 */
+    transform: translateX(-50%); /* 使用transform使其居中 */
+    width: 81rem; /* 限制宽度为页面的80%，您可以根据需要调整 */
+    /*max-width: 800px; !* 最大宽度，确保不会太宽 *!*/
+    background-color: #ffffff; /* 背景色与页面其他部分一致 */
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    /*padding: 15px;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd; /* 边界线 */
+    box-sizing: border-box;
+}
+
+/* 回复框内的文本输入框 */
+.reply-box textarea {
+    width: 85%;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: none; /* 禁止调整大小 */
+}
+
+/* 发送按钮样式 */
+.reply-box button {
+    width: 10%;
+    padding: 10px;
+    background-color: #007bff; /* 使用统一的蓝色 */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.reply-box button:hover {
+    background-color: #0056b3; /* 鼠标悬停时改变按钮颜色 */
+}
+
+input[type="file"] {
+            display: none;
+        }
+
+/* 样式化自定义上传按钮 */
+.file-upload-btn {
+    width: 12%;
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #000309;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* 图标 */
+.file-upload-btn i {
+    margin-right: 5px;
+}

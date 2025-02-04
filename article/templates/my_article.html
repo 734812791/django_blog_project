@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}my_article{% endblock %}
+
+{% block content %}
+<div style="width: 72rem;height: 3rem;background-color: #e6dbb9"><h1>{{ own_articles_user.name }}'s articles</h1></div>
+<div class="row g-0">
+    {% for article in object_list %}
+        <div class="card" style="width: 18rem;">
+            {% load static %}
+          {% if article.image_path == None %}
+                <img src="{% static 'images/pic.png' %}" class="card-img-top" alt="Image">
+          {% else %}
+                <img src="{{ MEDIA_URL }}{{ article.image_path }}" class="card-img-top" alt="Image">
+          {% endif %}
+          <div class="card-body">
+              <div style="max-height: 150px;overflow: auto">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.content }}</p>
+              </div>
+              <div>
+                <a href="{% url 'article:article_detail' article.article_id %}" class="btn btn-primary">detial</a>
+                {% if user.user_id == own_articles_user.user_id %}
+                    <a href="{% url 'article:delete_article' article.article_id %}" class="btn btn-danger">delete</a>
+                {% endif %}
+                {% if user.user_id == own_articles_user.user_id %}
+                    <a href="{% url 'article:update_article' article.article_id %}" class="btn btn-dark">update</a>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
